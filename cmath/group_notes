@@ -1,0 +1,83 @@
+Combinatorial Mathematics Notes
+===============================
+Group, Turnable World
+---------------------
+- Number of ways to paint a cube with 6 different colors
+   on each face = 6*5*P(4,4)/4/6 = 30
+   - four faces form a ring, top side can lie any in 6 orientations.
+- Different sides use the same color, what is the number of
+   coatings that are there?
+  
+
+- Number of ways to color corners of a square with 2 colors R and B = 2^4.
+  if square is allowed to rotate, how many different ways?
+    classify by number of red dots/point  
+   0 red dots - 1
+   1 red dots - 1 
+   2 red doit - 2   R  R   R  B
+                    B  B   B  R
+   3 red dot  - 1
+   4 red dot  - 1
+------------------
+Number of ways = 6
+------------------
+
+- Galois, french mathematician killed in duel, introduced the notion of group. 
+
+- Group, a set and an operation , satisying four conditions
+  closure, a.b = c
+  associativity, (a.b).c = a.(b.c)
+  identity, a.e = e.a = a
+  invetible = a.b =b.a = e, b = a^-1
+
+  G={0,1,2,...,n-1} group under addition mod n
+  Rigid items rotation in 2D euclidean space forms a group.
+
+- Simple Concepts in group
+    - finite  group
+    - infinite group
+    - |G|o - order of group
+    - H is subset of Group, subset group
+    - commutative or abelian group.
+    - unique identity
+    - G limited, a E G, a^r = e => a ^ -1 = a ^ (r-1)
+    - r known as the order of a, H = {a,a^2, ... , a^(r-1),a^r=e}
+      under it's inherited operations is also a group.
+Permutation Group
+-----------------
+ - Relation between coloring problem and group
+ - Permutation Group - finite group
+   [1,n] - N order gorup
+   P1 = (1 2 3 4  P2 =  (1 2 3 4
+          3 1 2 4),      4 3 2 1)
+
+   P1P2 = (1 2 3 4   (3 1 2 4    = (1 2 3 4
+           3 1 2 4)   2 4 3 1)      2 4 3 1)
+
+   commutative law doesn't hold not abelian
+   satisfies group laws
+
+  - Rotation of equilateral  triangle
+
+  - Conjugate class
+       - cycle representation
+       - n order cycle (a1a2..an)
+
+       - multiplication of disjointed cycles is exchangeble.
+       - p^n = (1) (2) .. (n) = e
+   - Any cycle can be represented by the product of swaps.
+
+
+Coloring
+--------
+ - rotation and reflection
+ - unchanged internal structure.
+ - Image equivalence class in permutation group.
+ -  4 different rotations
+    0,90,180,270
+ - k stabilizer 
+   Zk group
+   eg
+ - number of k order cycles.
+ - |Ek||Zk|=|G|, orbit-stabilizer theorem
+

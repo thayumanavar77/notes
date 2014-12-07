@@ -1,0 +1,110 @@
+CountDown Problem
+==================
+- do minimal things to make it work
+- optimize and add more later.
+- ensure correctness first
+- prototype in haskell and implement in other languages.
+
+Problem : countdown
+  - quiz programme on british tv since 1982.
+  - based upon on orig french vers...
+  - include a number game
+  - what it is 
+      1 3 7 10 25 50
+      + - * /
+      construct expr whose value is 765
+      search space huge
+       -- walk through search space and find solutions
+      (25-10) * (50 + 1) = 765
+      if target is 831, no solutions
+   rules
+     - positive naturals {1,2,3 ...}
+      
+Bottom Up Solution to the problem
+
+data Op = Add | Sub | Mul | Div
+
+apply an operator 
+apply :: Op -> Int -> Int -> Int
+apply Add x y = x + y
+apply Sub x y = x - y
+apply Mul x y = x * y
+apply Div x y = x `div` y
+
+(symbolic processing of expressions)
++ ve condition
+valid :: Op -> Int -> Int -> Bool
+valid Add _ _ = True
+valid Sub x y = x > y
+valid Mul _ _  = True
+valid Div x y = x `mod` y
+
+data Expr = Val Int | App Op Expr Expr
+
+eval :: Expr -> [Int]
+eval (Val n) = [n | n > 0]
+eval (App o l r) = [apply o x y | x <- eval l,
+                                  y <- eval r,
+                                  valid o x y]
+
+Formalising the problem
+ - few helper functions
+ - choices : [a] -> [[a]]
+ - values :: Expr -> [Int]
+    (list of all values in an expr)
+- solution :: Expr -> [Int] -> Int -> Bool
+  solution e ns n = elem (values e) (choices ns)
+                    && eval e == [n]
+
+Brute Force Soln
+----------------
+split :: [a] -> [([a], [a])]
+ - all possible ways to split a list into two non-empty parts.
+exprs :: [Int] -> [Expr]
+exprs [] = [] 
+exprs [n] = [Val n]
+exprs ns = [e | (ls,rs) <- split ns,
+                l <- exprs ls,
+                r <- exprs rs,
+                e <- combine l r]
+ -- brute force enumeration here.
+combine :: Expr -> Expr -> [Expr]
+combine l r = [App o l r | o <- [Add, Sub, Mul, Div]]
+
+solutions :: [Int] -> Int -> [Expr]
+solutions ns n = [e | ns' <- choices ns,
+                      e <- exprs ns',
+                      eval e == [n]]
+				
+    
+Better than brute force?
+========================
+
+-- type Result = (Expr, Int)
+
+-- results :: [Int] -> [Result]
+   results ns = [ (e,n) | e <- exprs ns,
+                         n <- eval e]
+
+  results [] = []
+  results [n] = [(Val n, n) | n > 0]
+  results ns = ...
+
+-- combine' (l, x) (r, y) = ...
+
+-- solutions' ns n = ...
+
+Even Better?
+   x * y = y * x
+   x * 1 = x
+ -- reduce search space by avoiding this one.
+
+
+Shrinking search space
+ - Algebraic properties, commutative * and 1 neutral element.
+ - valid :: Op -> Int -> Int -> Bool
+   valid Add x y = x <= y
+   valid Sub x y = x > y
+   valid Mul x y = x <= y && x /= 1 && y /= 1
+   valid Div x y = x `mod` y == 0
+

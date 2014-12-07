@@ -1,0 +1,113 @@
+
+Types and Classes
+=================
+
+- Type Declarations 
+    alias for an existing type
+    eg: type String = [Char]
+        -- string is a synonym for the type [Char]
+        
+        type Pos = (Int, Int)
+        origin :: Pos
+        origin = (0,0)
+       
+        parametrized types
+          type Pair a = (a,a)
+          
+     Type declarations can be nested
+         type Trans = Pos -> Pos
+     Type declarations cannot be recursive
+         incorrect type Tree = (Int, [Tree])
+         purely structural type.
+- Data Declarations
+     - completely new type, values specified.
+       eg: data Bool = False | True
+           (compare to OOO - Bool Abs. base class, (False True)   Subtypes)
+     - False,True constructors for type Bool
+     - Type & constructors begin with an upper-case letter.
+     - similar to CFG (how?)
+
+     - eg: data Answer = Yes | No | Unknown
+       
+     - Constructors in a data declaration can also have parameters
+       eg: data Shape = Circle Float | Rect Float Float
+           square  :: Float -> Shape
+           square n = Rect n n
+            
+           area :: Shape -> Float
+           area (Circle r) = pi * r ^ 2
+           area (Rect x y) = x * x
+             pattern matching to virtual dispatch
+             algebraic data types as object hierarchies.
+           Circle, Rect are viewed functions to construct values
+           of type Shape.
+        
+           data Maybe a = Nothing | Just a
+           
+- Recursive Types
+     types can be declared in terms of themselves
+     data Nat = Zero | Succ Nat
+          (Zero :: Nat, Succ :: Nat -> Nat)
+     values of this type, Zero, Succ Zero , Succ (Succ Zero)
+     (undefined and bottom are not discussed...)
+       Zero == 0 Succ == (1+)
+       Succ (Succ (Succ Zero))
+       1 + (1 + (1 + 0)) = 3
+
+       nat2int Zero = 0
+       nat2int (Succ n) = 1 + nat2int n
+       
+       define int2nat
+
+       add Zero n = n
+       add (Succ m) n = Succ (add m n)
+       (Recursive law for add corressponds to ...
+          0 + n = n
+          (1+m) + n = 1 + (m + n)
+
+More Recursive Types
+- AST for arithmetic expressions
+
+-     +
+     
+   1     *
+      2      3
+
+- data Expr = Val Int
+            | Add Expr Expr
+            | Mul Expr Expr
+  Add (Val 1) (Mul (Val 2) (Val 3))
+
+
+- Recursive functions
+     size :: Expr -> Int
+     (how many values occur)
+     size (Val n) = 1
+     size (Add x y) = size x + size y
+     size (Mul x y) = size x + size y
+     eval :: Expr -> Int
+     (evaluator for expression)
+     eval (Val n) = n
+     eval (Add x y) = eval x + eval y
+     eval (Mul x y) = eval x * eval y
+
+another example
+  - Binary Trees
+      data Tree = Leaf Int | Node Tree Int Tree
+      
+      occurs :: Int -> Tree -> Bool
+      occurs m (Leaf n) = m ==n
+      occurs m (Node l n r) = m == n
+                              || occurs m l
+                              || occurs m r
+
+
+     flatten :: Tree -> [Int]
+     flatten (Leaf n) = [n]
+     flatten (Node l n r) = flatten l ++ n ++ flatten r
+
+             
+       
+     
+
+
